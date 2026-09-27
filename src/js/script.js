@@ -9,14 +9,25 @@ async function obtenerPersonajes() {
 }
 
 function filtrarPorEstado(personajes, estado) {
-  return personajes.filter(function (personaje) {
-    return ;
+  if (estado === ""){
+    return personajes;
+  }
+  else {
+    return personajes.filter(function (personaje) {
+    return personaje.status.toLowerCase() === estado;
   });
+  } 
 }
 
 function filtrarPorEspecie(personajes, especie) {
-  // TODO: si especie viene vacía, devuelve personajes tal cual. Si no, filtra
-  // dejando solo los que coinciden (repasa el ejercicio 3 de la práctica).
+  if (especie === ""){
+    return personajes;
+  }
+  else {
+    return personajes.filter(function (personaje) {
+    return personaje.species === especie;
+  });
+  }
 }
 
 let personajes = [];

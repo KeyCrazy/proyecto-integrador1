@@ -34,7 +34,7 @@ body {
 /* TODO: dale layout a .personajes-grid con CSS Grid o con Flexbox.
    Compara las dos versiones en "Grid vs Flex" antes de decidir cuál usar aquí. */
 .personajes-grid {
-    background-color: #10141d;
+    
 }
 
 .personaje-card {
