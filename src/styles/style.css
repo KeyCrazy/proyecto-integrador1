@@ -31,13 +31,24 @@ body {
   color: inherit;
 }
 
+.opciones button{
+  padding: 12px 22px;
+  border-radius: 20px;
+  border: 1px solid #333 ;
+  background: #172033;
+  color: inherit;
+}
+
 /* TODO: dale layout a .personajes-grid con CSS Grid o con Flexbox.
    Compara las dos versiones en "Grid vs Flex" antes de decidir cuál usar aquí. */
 .personajes-grid {
-    
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 18px;
 }
 
 .personaje-card {
+  max-width: 220px;
   background: #172033;
   border-radius: 12px;
   overflow: hidden;
