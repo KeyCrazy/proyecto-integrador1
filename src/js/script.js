@@ -25,17 +25,80 @@ function filtrarPorEspecie(personajes, especie) {
   }
   else {
     return personajes.filter(function (personaje) {
-    return personaje.species === especie;
-  });
+      return personaje.species === especie;
+    });
   }
 }
 
+function obtenerNombres(personajes) {
+  return personajes.map(function (personaje) {
+    return personaje.name;
+  });
+}
+
+function hayPersonajesMuertos(personajes) {
+  return personajes.some(function (personaje) {
+    return personaje.status === "Dead";
+  });
+}
+
+function todosVivos(personajes) {
+  return personajes.every(function (personaje) {
+    return personaje.status === "Alive";
+  });
+}
+
+
+function ordenarPorNombre(personajes) {
+  return [...personajes].sort(function (a, b) {
+    return a.name.localeCompare(b.name);
+  });
+}
+
+function primeros(personajes, cantidad) {
+  return personajes.slice(0,cantidad);
+}
+
+function posicionDeNombre(nombres, nombre) {
+  return nombres.indexOf(nombre);
+}
+
+function contarVivos(personajes) {
+  return personajes.reduce(function (total, personaje) {
+    return personaje.status === "Alive" ? total + 1 : total;
+  }, 0);
+}
+
+function contarMuertos(personajes) {
+  return personajes.reduce(function (total, personaje) {
+    return personaje.status === "Dead" ? total + 1 : total;
+  }, 0);
+}
+
+function contarDesconocidos(personajes) {
+  return personajes.reduce(function (total, personaje) {
+    return personaje.status === "unknown" ? total + 1 : total;
+  }, 0);
+}
+
 let personajes = [];
+let ordenAscendente = false;
+
+function limpiarFiltros() {
+  document.querySelector("#filtro-nombre").value = "";
+  document.querySelector("#filtro-estado").value = "";
+  document.querySelector("#filtro-especie").value = "";
+  document.querySelector("#solo-diez-personajes").checked = false;
+  document.querySelector("#orden-alfabetico").textContent = "ordenar A-Z";
+  ordenAscendente = false;
+  aplicarFiltros();
+}
 
 function aplicarFiltros() {
   const nombre = document.querySelector("#filtro-nombre").value.trim().toLowerCase();
   const estado = document.querySelector("#filtro-estado").value;
   const especie = document.querySelector("#filtro-especie").value;
+  const mostrarSoloDiez = document.querySelector("#solo-diez-personajes").checked;
 
   let filtrados = filtrarPorEstado(personajes, estado);
   filtrados = filtrarPorEspecie(filtrados, especie);
@@ -43,12 +106,36 @@ function aplicarFiltros() {
     return personaje.name.toLowerCase().includes(nombre);
   });
 
+  if (ordenAscendente) {
+    filtrados = ordenarPorNombre(filtrados);
+  }
+
+  if (mostrarSoloDiez) {
+    filtrados = filtrados.slice(0, 10);
+  }
+
   pintarResultados(filtrados);
 }
 
 function pintarResultados(lista) {
   const contenedor = document.querySelector("#resultados");
+  const estadisticas = document.querySelector("#estadisticas");
+
   document.querySelector("#contador").textContent = lista.length + " personajes encontrados";
+
+  const vivos = contarVivos(lista);
+
+  const muertos = contarMuertos(lista);
+
+  const desconocidos = contarDesconocidos(lista);
+
+  const resumen = vivos + " vivos · " + muertos + " muertos · " + desconocidos + " desconocidos";
+
+  if (todosVivos(lista)) {
+    estadisticas.textContent = resumen + ". Todos vivos";
+  }   else if (hayPersonajesMuertos(lista)) {
+    estadisticas.textContent = resumen + ". Hay muertos";
+  }
 
   contenedor.innerHTML = lista
     .map(function (personaje) {
@@ -63,9 +150,19 @@ function pintarResultados(lista) {
     .join("");
 }
 
+function aplicarOpciones(){
+
+}
+
 document.querySelector("#filtro-nombre").addEventListener("input", aplicarFiltros);
 document.querySelector("#filtro-estado").addEventListener("change", aplicarFiltros);
 document.querySelector("#filtro-especie").addEventListener("change", aplicarFiltros);
+document.querySelector("#solo-diez-personajes").addEventListener("change", aplicarFiltros);
+document.querySelector("#limpiar-filtros").addEventListener("click", limpiarFiltros);
+document.querySelector("#orden-alfabetico").addEventListener("click", function () {
+  ordenAscendente = !ordenAscendente;
+  aplicarFiltros();
+});
 
 obtenerPersonajes().then(function (datos) {
   personajes = datos;

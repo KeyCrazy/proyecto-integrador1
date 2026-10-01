@@ -23,7 +23,8 @@ body {
 }
 
 .filtros input,
-.filtros select {
+.filtros select,
+.filtros button {
   padding: 8px 12px;
   border-radius: 8px;
   border: 1px solid #333;
@@ -31,16 +32,34 @@ body {
   color: inherit;
 }
 
-.opciones button{
-  padding: 12px 22px;
-  border-radius: 20px;
-  border: 1px solid #333 ;
-  background: #172033;
-  color: inherit;
+.filtros button {
+  cursor: pointer;
 }
 
-/* TODO: dale layout a .personajes-grid con CSS Grid o con Flexbox.
-   Compara las dos versiones en "Grid vs Flex" antes de decidir cuál usar aquí. */
+.opciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0;
+}
+
+.opciones button {
+  padding: 12px 22px;
+  border-radius: 20px;
+  border: 1px solid #333;
+  background: #172033;
+  color: inherit;
+  cursor: pointer;
+}
+
+.opciones label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #e9eef7;
+}
+
 .personajes-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
