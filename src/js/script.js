@@ -30,11 +30,11 @@ function filtrarPorEspecie(personajes, especie) {
   }
 }
 
-function obtenerNombres(personajes) {
+/* function obtenerNombres(personajes) {
   return personajes.map(function (personaje) {
     return personaje.name;
   });
-}
+} */
 
 function hayPersonajesMuertos(personajes) {
   return personajes.some(function (personaje) {
@@ -59,9 +59,9 @@ function primeros(personajes, cantidad) {
   return personajes.slice(0,cantidad);
 }
 
-function posicionDeNombre(nombres, nombre) {
+/* function posicionDeNombre(nombres, nombre) {
   return nombres.indexOf(nombre);
-}
+} */
 
 function contarVivos(personajes) {
   return personajes.reduce(function (total, personaje) {
@@ -111,7 +111,7 @@ function aplicarFiltros() {
   }
 
   if (mostrarSoloDiez) {
-    filtrados = filtrados.slice(0, 10);
+    filtrados = primeros(filtrados, 10)
   }
 
   pintarResultados(filtrados);
@@ -129,12 +129,12 @@ function pintarResultados(lista) {
 
   const desconocidos = contarDesconocidos(lista);
 
-  const resumen = vivos + " vivos · " + muertos + " muertos · " + desconocidos + " desconocidos";
-
   if (todosVivos(lista)) {
-    estadisticas.textContent = resumen + ". Todos vivos";
+    estadisticas.textContent = vivos + " vivos · " + muertos + " muertos · " + desconocidos + " desconocidos" + ". Todos vivos";
   }   else if (hayPersonajesMuertos(lista)) {
-    estadisticas.textContent = resumen + ". Hay muertos";
+    estadisticas.textContent = vivos + " vivos · " + muertos + " muertos · " + desconocidos + " desconocidos" + ". Hay muertos";
+  } else {
+    estadisticas.textContent = vivos + " vivos · " + muertos + " muertos · " + desconocidos + " desconocidos"
   }
 
   contenedor.innerHTML = lista
@@ -150,9 +150,6 @@ function pintarResultados(lista) {
     .join("");
 }
 
-function aplicarOpciones(){
-
-}
 
 document.querySelector("#filtro-nombre").addEventListener("input", aplicarFiltros);
 document.querySelector("#filtro-estado").addEventListener("change", aplicarFiltros);
@@ -161,8 +158,14 @@ document.querySelector("#solo-diez-personajes").addEventListener("change", aplic
 document.querySelector("#limpiar-filtros").addEventListener("click", limpiarFiltros);
 document.querySelector("#orden-alfabetico").addEventListener("click", function () {
   ordenAscendente = !ordenAscendente;
+  this.classList.toggle("activo", ordenAscendente);
   aplicarFiltros();
 });
+
+const botonOrden = document.querySelector("#orden-alfabetico");
+if (ordenAscendente) {
+  botonOrden.classList.add("activo");
+}
 
 obtenerPersonajes().then(function (datos) {
   personajes = datos;

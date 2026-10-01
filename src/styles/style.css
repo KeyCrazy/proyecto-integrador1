@@ -51,6 +51,14 @@ body {
   background: #172033;
   color: inherit;
   cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.opciones button.activo {
+  background: #5aff86;
+  border-color: #5aff86;
+  color: #1f120c;
+  font-weight: 600;
 }
 
 .opciones label {
